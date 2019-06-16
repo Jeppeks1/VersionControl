@@ -8,5 +8,7 @@ public class VersionControl {
 
     public static void main(String[] args) {
         String str = "This is the main function";
+
+        String str1 = "Introduce new commit";
     }
 }
