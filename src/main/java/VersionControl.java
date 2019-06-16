@@ -11,5 +11,8 @@ public class VersionControl {
         String str = "This is the main function";
 
         String str1 = "Introduce new commit";
+        String str2 = "Introduce new commit";
+        String str3 = "Introduce new commit";
+        String str4 = "Introduce new commit";
     }
 }
