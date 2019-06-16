@@ -5,6 +5,7 @@ package main.java;
 public class VersionControl {
 
     int value = 100;
+    int developValue = 5;
 
     public static void main(String[] args) {
         String str = "This is the main function";
