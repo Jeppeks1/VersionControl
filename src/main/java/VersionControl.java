@@ -20,5 +20,7 @@ public class VersionControl {
         String str7 = "Introduce new commit";
         String str8 = "Introduce new commit";
         String str9 = "Introduce new commit";
+
+        String str10 = "Introduce new commit";
     }
 }
