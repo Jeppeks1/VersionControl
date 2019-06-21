@@ -7,7 +7,7 @@ import main.java.core.Core;
 
 public class VersionControl {
 
-    int value = 100;
+    int value = 50;
 
     public static void main(String[] args) {
         String str = "This is the main function";
