@@ -2,8 +2,8 @@ package main.java;
 
 // Git - Rebase - ~2 - reword "fixed redundancy" fails
 
-import main.java.configuration.Config;
-import main.java.core.Core;
+import main.java.util.Config;
+import main.java.util.Core;
 
 public class VersionControl {
 
