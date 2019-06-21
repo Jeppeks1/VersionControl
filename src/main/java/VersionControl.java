@@ -17,5 +17,6 @@ public class VersionControl {
 
         System.out.println(core.str);
         System.out.println(config.config);
+        System.out.println("false");
     }
 }
