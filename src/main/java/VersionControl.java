@@ -2,20 +2,20 @@ package main.java;
 
 // Git - Rebase - ~2 - reword "fixed redundancy" fails
 
-import main.java.util.Config;
-import main.java.util.Core;
+import main.java.util.AuxiliarFileHandler;
+import main.java.util.Clock;
+import main.java.util.DensityConsultant;
 
 public class VersionControl {
 
-    int value = 50;
+    private static boolean flag;
 
     public static void main(String[] args) {
-        String str = "This is the main function";
+        if (flag)
+            System.out.println("true");
+        else
+            System.out.println("false");
 
-        Core core = new Core();
-        Config config = new Config();
-
-        System.out.println(core.str);
-        System.out.println(config.config);
+        System.out.println("false");
     }
 }
