@@ -11,12 +11,13 @@ public class Workload {
     private ArrayList<LatencyRecord.Sample> samples = new ArrayList<>();
     private LatencyRecord latencies;
 
-    private int rate = 200; // TPS
+    private int rate = 2000; // TPS
     private int time = 100; // Duration
     private int previousSecond = 0; // Logging purposes
     private boolean arrival = false; // Possion = true, Regular = false
 
     private int cnt = 0;
+    private int totalCount = 0;
 
     public Workload(LinkedList<SubmittedProcedure> workQueue, int rate) {
         this.workQueue = workQueue;
@@ -29,14 +30,8 @@ public class Workload {
         // Begin measuring the completion time
         long startTime = System.nanoTime();
 
-        // Set the lowest observed phase-rate which is used to determine the sleep intervals
-        int lowestRate = Integer.MAX_VALUE;
-        if (rate < lowestRate) {
-            lowestRate = rate;
-        }
-
         // Determine the sleeping interval to meet the specified TPS
-        long intervalNs = getInterval(lowestRate, arrival);
+        long intervalNs = getInterval(rate, arrival);
 
         // Set the test duration in nanoseconds based on the user
         // input stored in the current phase.
@@ -46,7 +41,6 @@ public class Workload {
         long nextInterval = startTime + intervalNs;
         boolean resetQueues = true;
         int nextToAdd = 1;
-        int rateFactor;
 
         // Main Loop
         boolean execute = true;
@@ -54,38 +48,41 @@ public class Workload {
             // posting new work... and reseting the queue in case we have new
             // portion of the workload...
 
-            rateFactor = rate / lowestRate;
-            addToQueue(nextToAdd * rateFactor, resetQueues);
+            addToQueue(nextToAdd, resetQueues);
             resetQueues = false;
 
-            // Wait until the interval expires, which may be "don't wait"
+            // Determine the time to sleep
             long now = System.nanoTime();
-            long diff = nextInterval - now;
-            while (diff > 0) { // this can wake early: sleep multiple times to
-                // avoid that
-                long ms = diff / 1000000;
-                diff = diff % 1000000;
+            long sleep = nextInterval - now;
+
+            while (sleep > 0) {
+                // Sleep for the required duration
+                long sleepMs = sleep / 1000000;
+                long sleepNs = sleep % 1000000;
+
                 try {
-                    Thread.sleep(ms, (int) diff);
+                    Thread.sleep(sleepMs, (int) sleepNs);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+
+                //
                 now = System.nanoTime();
-                diff = nextInterval - now;
+                sleep = nextInterval - now;
             }
 
             // Compute the next interval and how many messages to deliver
             intervalNs = 0;
             nextToAdd = 0;
             do {
-                intervalNs += getInterval(lowestRate, arrival);
+                intervalNs += getInterval(rate, arrival);
                 nextToAdd++;
-            } while ((-diff) > intervalNs);
+            } while ( -sleep > intervalNs);
 
             nextInterval += intervalNs;
 
 
-
+            totalCount++;
 
 
             // Check if the current phase is complete
@@ -95,6 +92,8 @@ public class Workload {
                 execute = false;
             }
         }
+
+        System.out.println("Final count: " + totalCount + " and it should be: " + time * rate);
     }
 
 
@@ -122,11 +121,11 @@ public class Workload {
     }
 
 
-    private long getInterval(int lowestRate, boolean arrival) {
+    private long getInterval(int rate, boolean arrival) {
         if (arrival)
-            return (long) ((-Math.log(1 - Math.random()) / lowestRate) * 1000000000.);
+            return (long) ((-Math.log(1 - Math.random()) / rate) * 1000000000.);
         else
-            return (long) (1000000000. / (double) lowestRate + 0.5);
+            return (long) (1000000000 / (double) rate + 0.5);
     }
 
 

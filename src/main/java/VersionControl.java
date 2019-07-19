@@ -16,7 +16,6 @@ public class VersionControl {
     private static final LinkedList<Workload.SubmittedProcedure> workQueue = new LinkedList<>();
 
     public static void main(String[] args) {
-
         int tps = 200;
 
         Workload workload = new Workload(workQueue, tps);

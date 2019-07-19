@@ -37,7 +37,7 @@ public class Worker implements Runnable {
 
                 int threshold = 1000 / rate; // Rate at which the Worker is just able to keep up with the queue
                 int thresholdAjd = threshold - threshold / 2; // Allow some space for random variance
-                int sleep = thresholdAjd + rng.nextInt(threshold); // Add some random variance
+//                int sleep = thresholdAjd + rng.nextInt(threshold); // Add some random variance
                 Thread.sleep(5);
             }
         } catch (InterruptedException ex) {
