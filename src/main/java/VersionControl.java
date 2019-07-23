@@ -6,6 +6,9 @@ import main.java.util.AuxiliarFileHandler;
 import main.java.util.Clock;
 import main.java.util.DensityConsultant;
 
+/**
+ * Shit, this comment should be its own commit.
+ */
 public class VersionControl {
 
     private static boolean flag;
